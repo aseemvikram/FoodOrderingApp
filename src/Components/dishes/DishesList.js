@@ -2,6 +2,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { View, Text, Button, Image } from "react-native"
 import { styled } from "styled-components";
 import { useCart } from "../../Hooks/useCart";
+import { Counter } from "../cart/Counter";
+import { cartAtom } from "../../atoms";
 
 const Container = styled(View)`
     padding:5px;
@@ -9,6 +11,9 @@ const Container = styled(View)`
     width:350px;
     margin-bottom:20px;
     border: 1px solid black;
+`
+const CounterContainer = styled(View)`
+    align-items:center;
 `
 const InnerContainer = styled(View)`
     display:flex;
@@ -42,9 +47,9 @@ const RightText = styled(Text)`
     text-align: right;
     padding-right:5px;
 `
-const DishesList = ({ dish,name, image, cuisine, price, calories, isvegetarian }) => {
+const DishesList = ({ dish, name, image, cuisine, price, calories, isvegetarian }) => {
 
-const {addDishesToCart}=useCart()
+    const { addDishesToCart, isItemExist } = useCart()
     return (
         <Container>
             <Images
@@ -53,21 +58,25 @@ const {addDishesToCart}=useCart()
                     uri: image,
                 }}
             />
-            <InnerContainer> 
+            <InnerContainer>
                 <NameText>{name}</NameText>
                 <Ionicons name="heart-outline" size={32} color="red" />
             </InnerContainer>
 
-           <InnerContainerTwo> 
+            <InnerContainerTwo>
                 <RightText>{isvegetarian ? (<Ionicons name="leaf" size={20} color="green" />) : (<Ionicons name="leaf" size={20} color="red" />)}</RightText>
                 <SubText>&#8226;{cuisine}  &#8226;{calories}Cal  &#8226;{price}&#8377;</SubText>
             </InnerContainerTwo>
-            <Button
-                onPress={()=>addDishesToCart(dish)}
-                title="ADD NOW"
-                color= 'brown'
-               
-            />  
+            {!isItemExist(dish) ? (
+                <Button
+                    onPress={() => addDishesToCart(dish)}
+                    title="ADD NOW"
+                    color='brown'
+
+                />) :
+                (
+                   <CounterContainer><Counter quantity={isItemExist(dish)} dish={dish} /></CounterContainer> 
+                )}
         </Container>)
 }
 export { DishesList };

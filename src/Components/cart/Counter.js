@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useCart } from "../../Hooks/useCart";
 
@@ -24,15 +24,6 @@ margin: 0px 10px;
 const Counter = ({ quantity, dish }) => {
 
     const {updateCartItemQuantity}=useCart();
-    const [count, setCount] = useState(quantity || 0);
-    const handleInc = () => {
-        setCount(count + 1);
-    };
-    const handleDec = () => {
-        if (count > 1) {
-            setCount(count - 1);
-        }
-    };
     return (
 
         <Container>
